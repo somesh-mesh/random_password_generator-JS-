@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Password Generator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Generate a <br /><span>Random Password</span></h1>
+        <div class="display">
+            <input type="text" id="password" placeholder="Password" />
+            <img src="images/copy.png" onclick="copyPassword()"/>
+        </div>
+        <button onclick="createPassword()">
+            <img src="images/generate.png" />
+            Generate a Password
+        </button>
+    </div>
+
+    <div class="toast-container"></div>
+
+    <script>
+        const passwordBox = document.getElementById("password");
+        const length = 12;
+
+        const upperCase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        const lowerCase = "abcdefghijklmnopqrstuvwxyz";
+        const numbers = "0123456789";
+        const specialSymbols = "!@#$%^&*()-_=+[]{}|;:,.<>?/~";
+
+        const allChars = upperCase + lowerCase + numbers + specialSymbols;
+
+        function createPassword() {
+            let password = "";
+            password += upperCase[Math.floor(Math.random() * upperCase.length)];
+            password += lowerCase[Math.floor(Math.random() * lowerCase.length)];
+            password += numbers[Math.floor(Math.random() * numbers.length)];
+            password += specialSymbols[Math.floor(Math.random() * specialSymbols.length)];
+
+            while (length > password.length) {
+                password += allChars[Math.floor(Math.random() * allChars.length)];
+            }
+            passwordBox.value = password;
+        }
+
+        function copyPassword() {
+            const toastContainer = document.querySelector('.toast-container');
+
+            if(passwordBox.value !== "") {
+                passwordBox.select();
+                document.execCommand("copy");
+
+                // Create a toast element
+                const toast = document.createElement('div');
+                toast.classList.add('toast');
+                toast.textContent = 'Password Copied';
+
+                // Append the toast to the container
+                toastContainer.appendChild(toast);
+
+                // Triggering reflow to apply transition
+                toast.offsetHeight;
+
+                // Show the toast
+                toast.classList.add('show');
+
+                // Remove the toast after a certain duration (e.g., 2 seconds)
+                setTimeout(function() {
+                    toast.classList.remove('show');
+                    setTimeout(function() {
+                        toastContainer.removeChild(toast);
+                    }, 500); // transition duration
+                }, 2000); // 2 seconds
+            } else {
+                // Create a toast element
+                const toast = document.createElement('div');
+                toast.classList.add('toast');
+                toast.textContent = 'Please Generate password first!!!!';
+
+                // Append the toast to the container
+                toastContainer.appendChild(toast);
+
+                // Triggering reflow to apply transition
+                toast.offsetHeight;
+
+                // Show the toast
+                toast.classList.add('show');
+
+                // Remove the toast after a certain duration (e.g., 2 seconds)
+                setTimeout(function() {
+                    toast.classList.remove('show');
+                    setTimeout(function() {
+                        toastContainer.removeChild(toast);
+                    }, 500); // transition duration
+                }, 2000); // 2 seconds
+            }
+        }
+    </script>
+</body>
+</html>
